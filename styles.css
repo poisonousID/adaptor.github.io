@@ -175,9 +175,7 @@ body { background-color: var(--bg-color); color: var(--text-primary); font-famil
     position: relative; width: 100%; aspect-ratio: 16/9;
     border-radius: 12px; overflow: hidden; background: #000; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-    /* cursor pointer 只给顶部视频加 */
 }
-/* 给顶部视频单独加交互 */
 #overview .video-custom-container { cursor: pointer; }
 
 .main-video { width: 100%; height: 100%; object-fit: cover; display: block; }
