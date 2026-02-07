@@ -16,10 +16,9 @@
         <div class="nav-inner">
             <span class="logo">Adaptor</span>
             <div class="nav-links">
-                <a href="#abstract">Abstract</a>
-                <a href="#motivation">Motivation</a>
-                <a href="#method">Method</a>
-                <a href="#experiments">Experiments</a>
+                <a href="#video">Video</a> <a href="#method">Method</a>
+                <a href="#efficiency">Efficiency</a>
+                <a href="#generalization">Generalization</a>
                 <a href="#results">Results</a>
                 <a href="#bibtex">BibTeX</a>
             </div>
@@ -30,7 +29,7 @@
         </div>
     </nav>
 
-    <main class="standard-container" style="padding-bottom: 40px;">
+    <main class="standard-container" style="padding-bottom: 20px;">
         
         <section class="hero">
             <div style="height: 50px;"></div>
@@ -66,93 +65,106 @@
             </div>
         </section>
 
-        <section class="teaser">
-            <div class="teaser-grid">
-                <div class="grid-item"><video autoplay muted loop playsinline src="videos/1-1.mp4"></video></div>
-                <div class="grid-item"><video autoplay muted loop playsinline src="videos/2-1.mp4"></video></div>
-                <div class="grid-item"><video autoplay muted loop playsinline src="videos/3-1.mp4"></video></div>
-                <div class="grid-item"><video autoplay muted loop playsinline src="videos/4-1.mp4"></video></div>
-                <div class="grid-item"><video autoplay muted loop playsinline src="videos/5-1.mp4"></video></div>
-                <div class="grid-item"><video autoplay muted loop playsinline src="videos/6-1.mp4"></video></div>
-                <div class="grid-item"><video autoplay muted loop playsinline src="videos/7-1.mp4"></video></div>
-                <div class="grid-item"><video autoplay muted loop playsinline src="videos/8-1.mp4"></video></div>
-                <div class="grid-item"><video autoplay muted loop playsinline src="videos/9-1.mp4"></video></div>
-            </div>
-            <p class="caption">
-                <strong>Adaptor</strong> generalizes intent recognition across operators with varying expertise levels and habits via few-shot learning.
-            </p>
-        </section>
-
-        <section id="abstract" class="section" style="margin-bottom: 0;">
-            <h2>Abstract</h2>
-            <p class="text-block">
-                Assistive teleoperation improves efficiency by adopting a shared-control paradigm where humans provide high-level guidance and robots execute low-level actions. However, inter-operator variability stemming from diverse habits and expertise results in highly heterogeneous trajectory distributions, challenging the stability of intent recognition. To address this, we introduce <span class="highlight-chip">Adaptor</span>, a framework designed to generalize intent recognition via few-shot learning. Adaptor operates in two core phases: in preprocessing, it models intent uncertainty by constructing trajectory perturbation distributions via noise injection and employing geometry-aware keyframe extraction; in policy learning, these processed trajectories are encoded by an Intention Expert and fused with pre-trained VLM features to condition an Action Expert for precise generation. We evaluate Adaptor on six manipulation tasks across simulation and real-world setups with users of varying experience. Results demonstrate that Adaptor significantly outperforms direct teleoperation and prior assistive methods in success rate, completion time, and user satisfaction, achieving state-of-the-art performance.
-            </p>
-        </section>
-    </main>
-
-    <div class="nerfies-bg" id="motivation-teaser">
-        <div class="wide-container">
-            <div class="nerfies-gallery">
-                <div class="nerfies-item">
-                    <video autoplay muted loop playsinline src="videos/depth.mp4"></video>
-                    <div class="nerfies-label worksans-text">Depth<br>Uncertainty</div>
-                </div>
-                <div class="nerfies-item">
-                    <video autoplay muted loop playsinline src="videos/kinematics.mp4"></video>
-                    <div class="nerfies-label worksans-text">Kinematics<br>Mismatch</div>
-                </div>
-                <div class="nerfies-item">
-                    <video autoplay muted loop playsinline src="videos/collision.mp4"></video>
-                    <div class="nerfies-label worksans-text">Joint<br>Collision</div>
-                </div>
-                <div class="nerfies-item">
-                    <video autoplay muted loop playsinline src="videos/workload.mp4"></video>
-                    <div class="nerfies-label worksans-text">High<br>Workload</div>
+        <section id="video" class="section">
+            <h2 class="section-title-center">Video Presentation</h2>
+            
+            <div class="video-custom-container" onclick="toggleVideo(this)">
+                <video class="main-video" poster="imgs/video_cover.jpg" playsinline>
+                    <source src="videos/Adaptor.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="play-overlay">
+                    <div class="play-btn-circle"><i class="fa-solid fa-play"></i></div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <main class="standard-container">
-        
-        <section id="motivation" class="section">
-            <h2 class="section-title-left">Motivation</h2>
-            <p class="text-block">
-                Inter-operator heterogeneity presents a challenge for learning-based teleoperation. Operators with varying levels of experience demonstrate significant differences in trajectory smoothness and operational speed, resulting in distribution shifts that degrade the performance of policies trained solely on expert data.<br><br>
-                Existing methods, such as Behavior Cloning, tend to overfit to specific expert demonstrations, leading to failures when encountering unseen user habits. Furthermore, scaling data collection to cover all potential operator styles is impractical due to high costs. Adaptor addresses these issues by modeling intent uncertainty, enabling generalization to diverse operators without requiring exhaustive data coverage.
-            </p>
         </section>
 
         <section id="method" class="section">
-            <h2 class="section-title-left">Method</h2> <p class="section-desc">
-                The Adaptor framework consists of two phases designed to handle intent variability.<br><br>
-                <strong>Phase I: Intention Preprocessing.</strong> We construct a perturbation distribution by injecting noise into expert trajectories to simulate suboptimal behaviors. Additionally, a geometry-aware keyframe extraction method is applied to retain critical temporal information while reducing redundancy.<br><br>
-                <strong>Phase II: VLA-Based Policy Learning.</strong> Processed trajectories are encoded by an Intention Expert and combined with context from a pre-trained Vision-Language Model (VLM). This conditions the Action Expert, which uses Flow Matching to generate control commands.
+            <h2 class="section-title-left">Method</h2>
+            <p class="section-desc">
+                The Adaptor framework establishes a robust pipeline for intent generalization through two phases.<br><br>
+                <strong>Phase I: Intention Preprocessing.</strong> We construct a perturbation distribution by injecting stochastic noise into expert trajectories to simulate suboptimal behaviors. Simultaneously, we employ a geometry-aware keyframe extraction mechanism to distill critical temporal information.<br><br>
+                <strong>Phase II: VLA-Based Policy Learning.</strong> Processed trajectories are encoded by an Intention Expert and fused with semantic context from a pre-trained VLM. This conditions the Action Expert, which utilizes Flow Matching to generate precise control commands.
             </p>
             <div class="image-container zoom-effect">
                 <img src="imgs/framework.png" alt="Adaptor Framework Overview" class="responsive-img"> 
             </div>
         </section>
 
-        <section id="experiments" class="section">
-            <h2 class="section-title-left">Experiments</h2>
-            <p class="section-desc">
-                We evaluate Adaptor on six manipulation tasks across three robotic platforms.
-            </p>
-            <div class="video-custom-container" onclick="toggleVideo(this)">
-                <video class="main-video" poster="imgs/video_cover.jpg" playsinline>
-                    <source src="videos/experiments.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <div class="play-overlay">
-                    <div class="play-btn-circle">
-                        <i class="fa-solid fa-play"></i>
+    </main>
+
+    <div id="efficiency" style="margin-bottom: 80px;">
+        <div class="wide-container">
+            <h2 class="section-title-center">Boosting Teleoperation Efficiency</h2>
+        </div>
+
+        <div class="gray-full-width-bg">
+            <div class="wide-container">
+                <div class="dual-video-grid-wide">
+                    <div class="video-wrapper">
+                        <div class="video-custom-container">
+                            <video class="main-video" poster="imgs/coarse_cover.jpg" autoplay muted loop playsinline controls>
+                                <source src="videos/experiment1.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <p class="video-caption"><strong>Coarse Demonstration:</strong> Operator provides a rough guide; Adaptor refines it into precise actions.</p>
+                    </div>
+
+                    <div class="video-wrapper">
+                        <div class="video-custom-container">
+                            <video class="main-video" poster="imgs/partial_cover.jpg" autoplay muted loop playsinline controls>
+                                <source src="videos/experiment2.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <p class="video-caption"><strong>Partial Demonstration:</strong> Operator executes only a subset; Adaptor completes the full trajectory.</p>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
+        <div class="wide-container">
+            <div class="chart-container">
+                <img src="imgs/overall_performance.png" alt="Overall Performance" class="responsive-img-chart">
+                <p class="chart-caption">Adaptor significantly reduces teleoperation time while maintaining a high success rate.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="transparent-section" id="generalization">
+        <div class="wide-container">
+            <h2 class="section-title-center">Cross-Operator Generalization</h2>
+            <p class="section-desc-centered">
+                Adaptor explicitly models intent uncertainty, minimizing the performance disparity between novice and expert users.
+            </p>
+
+            <div class="carousel-container">
+                <button class="nav-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                
+                <div class="carousel-track">
+                    <div class="card-3d"><video autoplay muted playsinline src="videos/1-1.mp4"></video></div>
+                    <div class="card-3d"><video autoplay muted playsinline src="videos/2-1.mp4"></video></div>
+                    <div class="card-3d"><video autoplay muted playsinline src="videos/3-1.mp4"></video></div>
+                    <div class="card-3d"><video autoplay muted playsinline src="videos/4-1.mp4"></video></div>
+                    <div class="card-3d"><video autoplay muted playsinline src="videos/5-1.mp4"></video></div>
+                    <div class="card-3d"><video autoplay muted playsinline src="videos/6-1.mp4"></video></div>
+                    <div class="card-3d"><video autoplay muted playsinline src="videos/7-1.mp4"></video></div>
+                    <div class="card-3d"><video autoplay muted playsinline src="videos/8-1.mp4"></video></div>
+                    <div class="card-3d"><video autoplay muted playsinline src="videos/9-1.mp4"></video></div>
+                </div>
+
+                <button class="nav-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+
+            <div class="carousel-dots"></div>
+
+            <div class="chart-container" style="margin-top: 40px;">
+                <img src="imgs/cross_operator.png" alt="Cross Operator Generalization" class="responsive-img-chart">
+                <p class="chart-caption">Adaptor maintains low performance variance across operators with different expertise levels.</p>
+            </div>
+        </div>
+    </div>
+
+    <main class="standard-container">
         <section id="results" class="section">
             <h2 class="section-title-left">Results</h2>
             <div class="results-grid">
@@ -190,20 +202,16 @@
 }</code></pre>
             </div>
         </section>
-        
-        <footer class="footer">
-            <p>Project page template inspired by <a href="https://github.com/InternRobotics/internvla-a1.github.io">InternVLA</a> and <a href="https://nerfies.github.io/">Nerfies</a>.</p>
-        </footer>
-
     </main>
 
     <script>
+        // === 1. 顶部 Video Presentation 播放控制 ===
         function toggleVideo(container) {
             const video = container.querySelector('.main-video');
             const overlay = container.querySelector('.play-overlay');
             if (video.paused) {
                 video.play();
-                video.controls = true;
+                video.controls = true; // 播放后显示原生控件
                 overlay.style.opacity = '0';
                 overlay.style.pointerEvents = 'none';
             } else {
@@ -213,6 +221,112 @@
                 overlay.style.pointerEvents = 'auto';
             }
         }
+
+        // === 2. 5卡片无缝循环 ===
+        const track = document.querySelector('.carousel-track');
+        let cards = Array.from(document.querySelectorAll('.card-3d'));
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        const dotsContainer = document.querySelector('.carousel-dots');
+        
+        let currentIndex = 0; 
+        let prevDiffs = new Array(cards.length).fill(null);
+
+        // Init Dots
+        cards.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            dot.addEventListener('click', () => {
+                currentIndex = i; 
+                updateCarousel();
+            });
+            dotsContainer.appendChild(dot);
+        });
+        const dots = Array.from(document.querySelectorAll('.dot'));
+
+        function updateCarousel() {
+            const total = cards.length;
+            
+            cards.forEach((card, i) => {
+                let diff = (i - currentIndex) % total;
+                if (diff < 0) diff += total;
+                if (diff > total / 2) diff -= total;
+
+                // 穿墙逻辑
+                let iswrapping = false;
+                if (prevDiffs[i] !== null) {
+                    const jump = diff - prevDiffs[i];
+                    if (Math.abs(jump) > 2) iswrapping = true;
+                }
+                prevDiffs[i] = diff;
+
+                if (iswrapping) {
+                    card.style.transition = 'none';
+                } else {
+                    card.style.transition = 'all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                }
+
+                card.className = 'card-3d'; 
+                card.style.zIndex = 0;
+                card.style.opacity = 0;
+                card.style.visibility = 'hidden';
+                card.onclick = null;
+                
+                const video = card.querySelector('video');
+                video.onended = null;
+
+                if (diff === 0) {
+                    card.classList.add('pos-0');
+                    card.style.zIndex = 10;
+                    card.style.opacity = 1;
+                    card.style.visibility = 'visible';
+                    video.play().catch(e=>{});
+                    video.onended = () => moveNext(); 
+                } 
+                else if (diff === 1) { 
+                    card.classList.add('pos-1'); card.style.zIndex = 5; card.style.opacity = 1; card.style.visibility = 'visible';
+                    card.onclick = () => moveNext(); 
+                }
+                else if (diff === -1) { 
+                    card.classList.add('pos-n1'); card.style.zIndex = 5; card.style.opacity = 1; card.style.visibility = 'visible';
+                    card.onclick = () => movePrev(); 
+                }
+                else if (diff === 2) { 
+                    card.classList.add('pos-2'); card.style.zIndex = 2; card.style.opacity = 1; card.style.visibility = 'visible';
+                    card.onclick = () => { moveNext(); moveNext(); }; 
+                }
+                else if (diff === -2) { 
+                    card.classList.add('pos-n2'); card.style.zIndex = 2; card.style.opacity = 1; card.style.visibility = 'visible';
+                    card.onclick = () => { movePrev(); movePrev(); }; 
+                }
+                else {
+                    if (diff > 0) card.classList.add('pos-right-hidden');
+                    else card.classList.add('pos-left-hidden');
+                }
+                
+                if (iswrapping) void card.offsetWidth; 
+            });
+
+            const activeIndex = (currentIndex % total + total) % total;
+            dots.forEach((dot, i) => {
+                dot.className = 'dot'; 
+                let dist = Math.abs(i - activeIndex);
+                if (dist > total/2) dist = total - dist;
+
+                if (dist === 0) dot.classList.add('dot-center');
+                else if (dist === 1) dot.classList.add('dot-near');
+                else if (dist === 2) dot.classList.add('dot-mid');
+                else dot.classList.add('dot-far');
+            });
+        }
+
+        function moveNext() { currentIndex++; updateCarousel(); }
+        function movePrev() { currentIndex--; updateCarousel(); }
+
+        nextBtn.addEventListener('click', moveNext);
+        prevBtn.addEventListener('click', movePrev);
+
+        updateCarousel();
     </script>
 </body>
 </html>
