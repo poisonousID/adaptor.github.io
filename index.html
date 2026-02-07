@@ -204,13 +204,12 @@
     </main>
 
     <script>
-        // === 1. 顶部 Video Presentation 播放控制 ===
         function toggleVideo(container) {
             const video = container.querySelector('.main-video');
             const overlay = container.querySelector('.play-overlay');
             if (video.paused) {
                 video.play();
-                video.controls = true; // 播放后显示原生控件
+                video.controls = true;
                 overlay.style.opacity = '0';
                 overlay.style.pointerEvents = 'none';
             } else {
@@ -220,8 +219,6 @@
                 overlay.style.pointerEvents = 'auto';
             }
         }
-
-        // === 2. 5卡片无缝循环 ===
         const track = document.querySelector('.carousel-track');
         let cards = Array.from(document.querySelectorAll('.card-3d'));
         const prevBtn = document.querySelector('.prev-btn');
@@ -231,7 +228,6 @@
         let currentIndex = 0; 
         let prevDiffs = new Array(cards.length).fill(null);
 
-        // Init Dots
         cards.forEach((_, i) => {
             const dot = document.createElement('div');
             dot.classList.add('dot');
@@ -251,7 +247,6 @@
                 if (diff < 0) diff += total;
                 if (diff > total / 2) diff -= total;
 
-                // 穿墙逻辑
                 let iswrapping = false;
                 if (prevDiffs[i] !== null) {
                     const jump = diff - prevDiffs[i];
