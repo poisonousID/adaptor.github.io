@@ -39,7 +39,7 @@ body { background-color: var(--bg-color); color: var(--text-primary); font-famil
 
 /* === 3. Layouts === */
 .standard-container { max-width: 900px; margin: 0 auto; padding: 0 20px 40px 20px; }
-.wide-container { max-width: 1400px; width: 95%; margin: 0 auto; padding: 0 20px; }
+.wide-container { max-width: 1200px; width: 95%; margin: 0 auto; padding: 0 20px; }
 
 .transparent-section {
     background-color: transparent;
@@ -112,6 +112,8 @@ body { background-color: var(--bg-color); color: var(--text-primary); font-famil
 .image-container { 
     border-radius: 12px; overflow: hidden; border: none; background: transparent; 
     transition: transform 0.3s ease;
+    max-width: 100%;
+    margin: 0 auto;
 }
 .image-container:hover { transform: scale(1.02); }
 .responsive-img { width: 100%; height: auto; display: block; }
